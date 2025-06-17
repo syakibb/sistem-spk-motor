@@ -5,7 +5,6 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-12">
-        <!-- Header Card -->
         <div class="card card-custom mb-4">
             <div class="card-body text-center py-4">
                 <h1 class="h3 mb-2 text-primary fw-bold">
@@ -16,11 +15,9 @@
             </div>
         </div>
 
-        <!-- Question Card -->
         <div class="card card-custom">
             <div class="card-body p-4">
-                <form method="post" action="/diagnose">
-                    <!-- Question Title -->
+                <form method="post" action="{{ url_for('diagnose') }}">
                     <div class="mb-4">
                         <h2 class="h4 fw-semibold text-dark mb-3">
                             <i class="fas fa-question-circle text-primary me-2"></i>
@@ -28,7 +25,6 @@
                         </h2>
                     </div>
 
-                    <!-- Answer Options -->
                     <div class="mb-4">
                         {% for value, text in data.pilihan.items() %}
                         <div class="mb-3">
@@ -41,6 +37,7 @@
                                     id="option{{ value }}"
                                     {% if data.jawaban_sebelumnya == value %}checked{% endif %}
                                     style="transform: scale(1.2);"
+                                    required
                                 >
                                 <label class="form-check-label w-100" for="option{{ value }}">
                                     <div class="card border-2 h-100 option-card" style="cursor: pointer; transition: all 0.3s ease;">
@@ -61,11 +58,10 @@
                         {% endfor %}
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                         <div>
                             {% if riwayat_jawaban|length > 0 %}
-                            <a href="/kembali" class="btn btn-secondary-custom">
+                            <a href="{{ url_for('kembali') }}" class="btn btn-secondary-custom">
                                 <i class="fas fa-arrow-left me-2"></i>
                                 Kembali
                             </a>
@@ -82,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Progress Indicator (Optional) -->
         <div class="text-center mt-3">
             <small class="text-muted">
                 <i class="fas fa-info-circle me-1"></i>
@@ -99,13 +94,11 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.15) !important;
 }
-
 .form-check-input:checked ~ .form-check-label .option-card {
     border-color: #0d6efd !important;
     background-color: #e7f1ff !important;
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2) !important;
 }
-
 .form-check-input:checked ~ .form-check-label .option-card .fa-chevron-right {
     color: #0d6efd !important;
 }
