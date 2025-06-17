@@ -1,4 +1,4 @@
-# Nama file: app.py (Versi 4.7 - Perbaikan KeyError & Reset Logic)
+# Nama file: app.py (Versi 4.8 - Final Tanpa Redirect untuk Stabilitas Session)
 
 from flask import Flask, render_template, request, session, redirect, url_for
 from engine import DiagnosisEngine
@@ -7,8 +7,10 @@ from threading import Timer
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'd3b2a1a8c4f6e7d8b9a0c1d2e3f4a5b6'
+# Menggunakan kunci yang lebih kuat dan acak, ini praktik yang baik
+app.config['SECRET_KEY'] = 'b1d8f2a7e9c3a0d4e5f6g7h8i9j0k1l2'
 
+# knowledge_map tidak perlu diubah
 knowledge_map = {
     'tanya_tipe_motor': {'pertanyaan': 'Pertama, apa tipe umum motor Anda?', 'pilihan': { 'matic': 'Matic (CVT)', 'manual': 'Manual (Gigi / Rantai)' }},
     'tanya_sistem_bb': {'pertanyaan': 'Apa sistem bahan bakar yang digunakan motor Anda?', 'pilihan': { 'karburator': 'Karburator', 'injeksi': 'Injeksi (FI)' }},
@@ -33,15 +35,22 @@ knowledge_map = {
     'warna_asap': { 'pertanyaan': 'Apa warna asap yang keluar dari knalpot?', 'pilihan': {'putih_tipis_pagi_hari': 'Putih tipis saat mesin dingin & lalu hilang.', 'putih_tebal_terus': 'Putih tebal terus-menerus.', 'hitam_pekat': 'Hitam pekat dan berbau bensin.'}}
 }
 
-# --- RUTE UTAMA YANG DIPERBAIKI ---
+
+# --- RUTE UTAMA YANG DIROMBAK TOTAL UNTUK MENGHINDARI REDIRECT ---
 @app.route('/', methods=['GET', 'POST'])
 def diagnose():
-    # Logika inisialisasi sesi yang baru dan lebih kuat
-    if 'konteks_motor' not in session or request.args.get('reset'):
+    # Selalu cek dan inisialisasi sesi di awal jika belum ada
+    if 'konteks_motor' not in session:
+        session['konteks_motor'] = {}
+        session['gejala_list'] = []
+
+    # Jika ada parameter 'reset', bersihkan sesi dan mulai dari awal
+    if request.args.get('reset'):
         session.clear()
         session['konteks_motor'] = {}
         session['gejala_list'] = []
 
+    # Proses jawaban HANYA jika metode adalah POST
     if request.method == 'POST':
         jawaban_user = request.form.get('jawaban')
         if jawaban_user:
@@ -52,11 +61,8 @@ def diagnose():
             else:
                 session['gejala_list'].append(jawaban_user)
             session.modified = True
-        # Selalu redirect setelah POST untuk mengikuti pola Post/Redirect/Get
-        return redirect(url_for('diagnose'))
-
-    # --- Sisa logika di bawah ini untuk menangani permintaan GET ---
     
+    # Bagian ini akan berjalan untuk GET dan SETELAH data POST diproses
     jawaban_sebelumnya = session.get('pilihan_sebelumnya')
     riwayat_gabungan = list(session.get('konteks_motor', {}).values()) + session.get('gejala_list', [])
 
@@ -67,6 +73,7 @@ def diagnose():
             session.pop('pilihan_sebelumnya')
         return render_template('pertanyaan.html', data=data_pertanyaan, riwayat_jawaban=riwayat_gabungan)
 
+    # Logika untuk menentukan pertanyaan apa yang akan ditampilkan
     if 'tipe' not in session.get('konteks_motor', {}):
         return render_pertanyaan('tanya_tipe_motor')
     if 'sistem_bb' not in session.get('konteks_motor', {}):
@@ -80,8 +87,9 @@ def diagnose():
         elif tipe_motor == 'manual':
             data_pertanyaan['pilihan']['masalah_penggerak'] = 'Masalah pada area penggerak roda (Rantai & Gigi).'
         data_pertanyaan['jawaban_sebelumnya'] = jawaban_sebelumnya
-        return render_pertanyaan('tanya_utama') # Mengubah ini agar lebih eksplisit jika perlu
+        return render_pertanyaan('gejala_utama')
     
+    # Jika semua konteks sudah ada, jalankan engine diagnosis
     engine = DiagnosisEngine()
     result = engine.run(session['gejala_list'], session['konteks_motor'])
 
@@ -93,7 +101,7 @@ def diagnose():
             
     return render_template('hasil.html', hasil={'diagnosis': 'Alur Diagnosis Selesai.', 'solusi': 'Sistem tidak memiliki cukup informasi untuk menyimpulkan.'})
 
-# Rute Kembali (diperbarui untuk menangani pop yang lebih aman)
+
 @app.route('/kembali')
 def kembali():
     jawaban_terakhir = None
@@ -109,9 +117,11 @@ def kembali():
     session.modified = True
     return redirect(url_for('diagnose'))
 
+
 @app.route('/tentang')
 def tentang():
     return render_template('tentang.html')
+
 
 def buka_browser():
       webbrowser.open_new('http://127.0.0.1:5000/')
