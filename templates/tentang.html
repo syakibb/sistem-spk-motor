@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block title %}Tentang - Mekanik Virtual{% endblock %}
+
+{% block content %}
+<div class="card card-custom">
+    <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+            <h1 class="h2 fw-bold text-primary">Tentang Mekanik Virtual</h1>
+            <p class="lead text-muted">Sebuah Sistem Pakar untuk Mendiagnosis Kerusakan Motor</p>
+        </div>
+        
+        <hr class="my-4">
+
+        <div>
+            <h4 class="h5 fw-semibold mb-3">
+                <i class="fas fa-rocket me-2"></i>
+                Apa itu Mekanik Virtual?
+            </h4>
+            <p>
+                Mekanik Virtual adalah sebuah aplikasi web berbasis sistem pakar yang dirancang untuk membantu pengguna melakukan diagnosis awal terhadap masalah atau kerusakan yang terjadi pada sepeda motor. Dengan menggunakan metode penalaran berbasis aturan (rule-based reasoning), aplikasi ini akan memandu pengguna melalui serangkaian pertanyaan spesifik, layaknya berkonsultasi dengan seorang mekanik berpengalaman.
+            </p>
+            <p>
+                Tujuan utama dari aplikasi ini adalah untuk memberikan perkiraan awal mengenai sumber masalah, solusi yang mungkin dilakukan, serta estimasi biaya dan tingkat kesulitan perbaikan, sehingga pengguna dapat mengambil keputusan yang lebih baik sebelum membawa kendaraannya ke bengkel.
+            </p>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="h5 fw-semibold mb-3">
+                <i class="fas fa-book me-2"></i>
+                Latar Belakang Proyek
+            </h4>
+            <p>
+                Aplikasi ini dikembangkan untuk memenuhi tugas besar dari mata kuliah <strong>Kecerdasan Buatan</strong> pada program studi Teknik Informatika di Universitas Pamulang.
+            </p>
+            <ul class="list-unstyled">
+                <li><strong>Dosen Pengampu:</strong></li>
+                <li class="ms-3">HARDIANSYAH S.Kom., M.M., M.Kom.</li>
+                <li class="ms-3"><small class="text-muted">NIDN. 0402078601</small></li>
+            </ul>
+        </div>
+        
+        <div class="mt-4">
+            <h4 class="h5 fw-semibold mb-3">
+                <i class="fas fa-cogs me-2"></i>
+                Teknologi yang Digunakan
+            </h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Backend:</strong> Python dengan Framework Flask</li>
+                <li class="list-group-item"><strong>Mesin Inferensi:</strong> Custom Rule-Based System (Logika Pohon Keputusan)</li>
+                <li class="list-group-item"><strong>Frontend:</strong> HTML, CSS, dan Bootstrap 5</li>
+            </ul>
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <h4 class="h5 fw-semibold mb-3 text-center">
+                <i class="fas fa-users me-2"></i>
+                Tim Pengembang (Kelompok 3)
+            </h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Asita Husna Dewi Fauziah</strong><br><small class="text-muted">NIM. 221011450476</small></li>
+                        <li class="mb-2"><strong>Bagus Pandu Pratama</strong><br><small class="text-muted">NIM. 221011450274</small></li>
+                        <li class="mb-2"><strong>Hasna Fikriyah Ramadhani</strong><br><small class="text-muted">NIM. 221011450626</small></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Syakib Binnur</strong><br><small class="text-muted">NIM. 221011450394</small></li>
+                        <li class="mb-2"><strong>Titik Oktaviani</strong><br><small class="text-muted">NIM. 221011450541</small></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-primary-custom">
+                <i class="fas fa-stethoscope me-2"></i>
+                Mulai Diagnosis Sekarang
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
