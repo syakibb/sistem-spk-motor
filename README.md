@@ -19,7 +19,7 @@ Jika Anda ingin menjalankan aplikasi ini di komputer Anda sendiri, ikuti langkah
 1.  **Clone Repositori**
     Buka terminal atau Git Bash, lalu clone repositori ini ke komputer Anda dan masuk ke dalam foldernya.
     ```bash
-    git clone [https://github.com/syakibb/sistem-spk-motor.git](https://github.com/syakibb/sistem-spk-motor.git)
+    git clone https://github.com/syakibb/sistem-spk-motor.git
     cd sistem-spk-motor
     ```
 
